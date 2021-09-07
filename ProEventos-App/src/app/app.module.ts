@@ -20,12 +20,20 @@ import { EventoService } from 'src/services/Evento.service';
 
 import { NavComponent } from './shared/nav/nav.component';
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
-import { TituloComponent } from './shared/Titulo/Titulo.component';
 
 import { EventosComponent } from './components/eventos/eventos.component';
+import { EventoDetalheComponent } from './components/eventos/evento-detalhe/evento-detalhe.component';
+import { EventoListaComponent } from './components/eventos/evento-lista/evento-lista.component';
+
+import { UserComponent } from './components/user/user.component';
+import { PerfilComponent } from './components/user/perfil/perfil.component';
+import { LoginComponent } from './components/user/login/login.component';
+import { RegistrationComponent } from './components/user/registration/registration.component';
+
 import { PalestrantesComponent } from './components/Palestrantes/Palestrantes.component';
-import { PerfilComponent } from './components/perfil/perfil.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { TituloComponent } from './shared/titulo/titulo.component';
+
 import { ContatosComponent } from './components/contatos/contatos.component';
 
 @NgModule({
@@ -41,6 +49,11 @@ import { ContatosComponent } from './components/contatos/contatos.component';
       NavComponent,
       DateTimeFormatPipe,
       TituloComponent,
+      EventoDetalheComponent,
+      EventoListaComponent,
+      UserComponent,
+      LoginComponent,
+      RegistrationComponent
 
    ],
   imports: [
