@@ -3,26 +3,22 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Evento } from 'src/models/Evento';
 
-@Injectable(
-  //{providedIn: 'root'} //Permite esta classe ser injetada por qualquer um
-)
+@Injectable()
+//{providedIn: 'root'} //Permite esta classe ser injetada por qualquer um
 export class EventoService {
   baseURL = 'https://localhost:5001/api/Eventos';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  public getEventos() : Observable<Evento[]>
-  {
-      return this.http.get<Evento[]>(this.baseURL);
+  public getEventos(): Observable<Evento[]> {
+    return this.http.get<Evento[]>(this.baseURL);
   }
 
-  public getEventosByTema(tema: string) : Observable<Evento[]>
-  {
-      return this.http.get<Evento[]>(`${this.baseURL}/${tema}/tema`);
+  public getEventosByTema(tema: string): Observable<Evento[]> {
+    return this.http.get<Evento[]>(`${this.baseURL}/${tema}/tema`);
   }
 
-  public getEventoById(id :number) : Observable<Evento>
-  {
-      return this.http.get<Evento>(`${this.baseURL}/${id}`);
+  public getEventoById(id: number): Observable<Evento> {
+    return this.http.get<Evento>(`${this.baseURL}/${id}`);
   }
 }
