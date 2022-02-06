@@ -19,8 +19,11 @@ defineLocale('pt-br', ptBrLocale);
 
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxCurrencyModule } from 'ngx-currency';
 
 import { EventoService } from 'src/services/Evento.service';
+import { LoteService } from 'src/services/lote.service';
+
 
 import { NavComponent } from './shared/nav/nav.component';
 import { DateTimeFormatPipe } from './helpers/DateTimeFormat.pipe';
@@ -66,6 +69,7 @@ import { ContatosComponent } from './components/contatos/contatos.component';
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
+    NgxCurrencyModule,
     BrowserAnimationsModule,
     CollapseModule.forRoot(),
     TooltipModule.forRoot(),
@@ -81,7 +85,8 @@ import { ContatosComponent } from './components/contatos/contatos.component';
     NgxSpinnerModule
   ],
   providers: [
-    EventoService //Permite a classe ´EventoService´ ser injetada por qualquer um
+    EventoService, //Permite a classe ´EventoService´ ser injetada por qualquer um
+    LoteService
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

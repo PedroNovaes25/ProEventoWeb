@@ -11,13 +11,15 @@ export class RegistrationComponent implements OnInit {
 
   form!: FormGroup;
 
-  get f() : any{
-    return this.form.controls;
-  }
 
   constructor(private fb: FormBuilder){
 
   }
+
+  get f() : any{
+    return this.form.controls;
+  }
+
 
   ngOnInit(): void {
     this.validation();
