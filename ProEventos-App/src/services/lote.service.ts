@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '@environments/environment';
 import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Lote } from 'src/models/Lote';
 
 @Injectable()
 export class LoteService {
-  baseUrl = 'https://localhost:5001/api/Lotes';
+  baseUrl = environment.apiURL +'api/Lotes';
 
 constructor(private http: HttpClient) { }
 

@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from '@environments/environment';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -63,6 +64,11 @@ export class EventoListaComponent implements OnInit {
     this.exibirImagem = !this.exibirImagem
   }
 
+  public carregarImagemEvento(imagemUrl: string): string{
+    return imagemUrl !=='' ? `${environment.apiURL}resources/images/${imagemUrl}`
+    : '../../../../assets/semImagem.png'
+  }
+
   public carregarEventos() : void
   {
     const observer ={
@@ -100,7 +106,7 @@ export class EventoListaComponent implements OnInit {
 
       },
       (error: any) => {
-        console.error(error);
+        console.log(error);
         this.toastr.error(`Error ao tentar deletar o evento ${this.eventoId}!`, 'Error');
       }
     ).add(() => this.spinner.hide());
@@ -114,5 +120,7 @@ export class EventoListaComponent implements OnInit {
   {
     this.router.navigate([`eventos/detalhe/${id}`]);
   }
+
+
 
 }

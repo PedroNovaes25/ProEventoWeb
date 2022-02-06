@@ -12,6 +12,7 @@ import { Evento } from 'src/models/Evento';
 import { EventoService } from 'src/services/Evento.service';
 import { Lote } from 'src/models/Lote';
 import { LoteService } from 'src/services/lote.service';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-evento-detalhe',
@@ -25,6 +26,9 @@ export class EventoDetalheComponent implements OnInit {
   eventoId = 0 ;
   modalRef!:BsModalRef
   loteAtual = {id: 0, nome: '', indice: 0} ;
+  file: File;
+
+  imagemURl = '../../../../assets/upload.png';
 
   get modoEditar():boolean{
     return this.estadoSalvar === 'put'
@@ -96,7 +100,7 @@ export class EventoDetalheComponent implements OnInit {
       qtdPessoas: ['', [Validators.required, Validators.max(120000)]],
       telefone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      imagemURL: ['', Validators.required],
+      imagemURL: [''],
       lotes: this.fb.array([])
     });
   }
@@ -113,6 +117,9 @@ export class EventoDetalheComponent implements OnInit {
         (evento: Evento ) =>{
           this.evento = {...evento};
           this.form.patchValue(this.evento)
+          if(this.evento.imagemURL !== ''){
+            this.imagemURl = environment.apiURL + 'resources/images/' + this.evento.imagemURL;
+          }
           this.carregarLote();
           // this.evento.lotes.forEach(lote =>{
           //     this.lotes.push(this.criarLote(lote));
@@ -120,7 +127,7 @@ export class EventoDetalheComponent implements OnInit {
         },
           (error: any) =>{
             this.toastr.error('Erro ao tentar carregar Evento.', 'Error!')
-            console.error(error);
+            console.log(error);
         }
         ).add(() => this.spinner.hide());
     }
@@ -138,7 +145,7 @@ export class EventoDetalheComponent implements OnInit {
               this.router.navigate([`eventos/detalhe/${eventoRetorno.id}`]);
             },
             (error: any) => {
-              console.error(error);
+              console.log(error);
               this.toastr.error('Não ao salvar Evento!','Error');
             },
             () => this.spinner.hide()
@@ -154,7 +161,7 @@ export class EventoDetalheComponent implements OnInit {
             this.router.navigate([`eventos/detalhe/${eventoRetorno.id}`]);
         },
           (error: any) => {
-            console.error(error);
+            console.log(error);
             this.toastr.error('Não ao salvar Evento!','Error');
           }
         ).add(() => this.spinner.hide());
@@ -188,7 +195,7 @@ export class EventoDetalheComponent implements OnInit {
         },
         (error: any) => {
           this.toastr.error('Não foi possível salvar Lote', 'Erro');
-          console.error(error);
+          console.log(error);
         },
       ).add(() => this.spinner.hide());
     }
@@ -203,7 +210,7 @@ export class EventoDetalheComponent implements OnInit {
       },
       (error: any) =>{
         this.toastr.error('Erro ao carregar lotes','Error!')
-        console.error(error);
+        console.log(error);
       }
     ).add(()=>this.spinner.hide());
   }
@@ -231,7 +238,7 @@ export class EventoDetalheComponent implements OnInit {
         this.lotes.removeAt(this.loteAtual.indice);
       },
       (error: any)=>{
-        console.error(error);
+        console.log(error);
         this.toastr.error('Erro ao tentar deletar Lote.','Error!');
       }
     ).add(() => this.spinner.hide());
@@ -242,28 +249,28 @@ export class EventoDetalheComponent implements OnInit {
   }
 
 
-  // public salvarAlteracoes() : void{
-  //   this.spinner.show();
+  public onFileChange(event: any) : void{
+    const reader = new FileReader();
+    reader.onload = (event: any) => this.imagemURl = event.target.result;
 
-  //   if(this.form.valid){
+    this.file = event.target.files;
+    reader.readAsDataURL(this.file[0]);
 
-  //     if(this.estadoSalvar === 'post'){
-  //       this.evento = {...this.form.value};
-  //     }
-  //     else{
-  //       this.evento = {id: this.evento.id, ...this.form.value};
-  //     }
+    this.uploadImage();
+  }
 
-  //     this.eventoService[this.estadoSalvar](this.evento).subscribe(
-  //       () => this.toastr.success('Evento salvo com sucesso!','Sucesso'),
-  //       (error: any) => {
-  //         console.error(error);
-  //         this.spinner.hide();
-  //         this.toastr.error('Não ao salvar Evento!','Error');
-  //       },
-  //       () => this.spinner.hide()
-  //     );
-
-  //   }
-  // }
+  uploadImage():void{
+    this.spinner.show();
+    this.eventoService.postUpload(this.eventoId, this.file).subscribe(
+      () => {
+        this.toastr.success('Imagem atualizada com sucesso','Sucesso!');
+        this.carregarEvento();
+      },
+      (error: Error) =>
+      {
+        this.toastr.error('Erro ao salvar imagem','Erro!')
+        console.log(error);
+      },
+    ).add(() => this.spinner.hide());
+  }
 }
